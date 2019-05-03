@@ -1,5 +1,5 @@
 from random import Random
-from time import time
+import time
 
 import inspyred
 from inspyred import ec
@@ -13,7 +13,7 @@ import math
 
 def resolve_multi(problem, parameters):
     prng = Random()
-    prng.seed(time())
+    prng.seed(time.time())
 
     #      In parameters from 0 -> 4
     #           pop_size | nmb_gen | p_crossover | p_mutation

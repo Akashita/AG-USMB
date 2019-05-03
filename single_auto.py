@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 from os import chdir
 
 
-print(time.time())
-
 interface = True
 
 ################################################################################
@@ -27,6 +25,9 @@ def affiche(ch,pos):
         message = police.render(ch, True, couleur, back)
         fenetre.blit(message, pos)
         pygame.display.flip()
+        #Si la fenetre reçoit un signal de fermeture, on fait planter le programme :
+        if QUIT in [event.type for event in pygame.event.get()]:
+            this_thing_work_even_if_not_very_smart = 1/0 #Pour quitter le programme
     else:
         print(ch)
 
@@ -40,8 +41,6 @@ def moyenne(L):
 
 
 def var_nmb_gen(parameters,min_g,max_g,pas_g):
-    global continuer
-
     minimum = []
     for n_gen in range(min_g , max_g , pas_g):
         #On fait varier le nombre de générations :
@@ -53,14 +52,9 @@ def var_nmb_gen(parameters,min_g,max_g,pas_g):
         final_pop = resolve_single(problem, parameters)
         liste = [Z.fitness for Z in final_pop]
         minimum.append( round( min(liste) , 4))
-        #On affiche le temps écoulé depuis le début du probleme
+
+        #On affiche le temps écoulé depuis le début du lancement du programme
         affiche('temps total : ' + str(int((time.time() - first_start) // 60)) + ' minutes',(0,140))
-
-        if interface:
-            #Si la fenetre reçoit un signal de fermeture, on fait planter le programme :
-            if QUIT in [event.type for event in pygame.event.get()]:
-                this_thing_work_even_if_not_very_smart = 1/0 #Pour quitter le programme
-
     return minimum[:]
 
 
@@ -158,8 +152,8 @@ while True:
 
             affiche(p['name']+' = '+ str(value) + ' / '+ str_max,(0,40))
 
-            #On récupère la liste des solutions optimales de chaque résolution en faisant varier
-            #le nombre de génération à chaque fois :
+            #On récupère la liste des solutions optimales de chaque résolution
+            #en faisant varier le nombre de génération à chaque fois :
             time_begin = time.time()
             liste_soluces.append(var_nmb_gen(parameters, min_gen, max_gen, pas_gen))
             t = time.time() - time_begin
@@ -207,4 +201,3 @@ while True:
 
 
     print("--- Done in",int(sum(exec_times)),'secondes ---')
-print('Programme arreté correctement')
