@@ -229,6 +229,7 @@ while  go_one:
             list_p_crossover = [x/10 for x in range(1,11)]
             list_p_mutation = [x/10 for x in range(1,11)]
 
+            # TODO: En mettre un dans chaque probleme,
             #pop_size , nmb_gen , p_crossover , p_mutation
             default_parameters = [200, 10, 0.5, 0.5]
 
