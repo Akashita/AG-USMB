@@ -12,6 +12,9 @@ from inspyred.benchmarks import Benchmark
 #     Functions
 #------------------------------------------------------------
 def input_int(ch , intervalle=[]):
+    """cette fonction permet de protéger l'entrée : seul les entiers compris
+    dans l'intervalle voulu (si il y en a un) sont acceptés"""
+
     intervalle_exist = ( len(intervalle) != 0 )
     valide = False
     while not valide:
@@ -19,7 +22,6 @@ def input_int(ch , intervalle=[]):
         if entree == '':
             print("You choose the default value")
             return 'default'
-
         try:
             entree = int(entree)
             if intervalle_exist:
@@ -37,6 +39,8 @@ def input_int(ch , intervalle=[]):
     return entree
 
 def input_float(ch , intervalle=[]):
+    """cette fonction permet de protéger l'entrée : seul les réels compris
+    dans l'intervalle voulu (si il y en a un) sont acceptés"""
     intervalle_exist = (len(intervalle) != 0)
     valide = False
     while not valide:
@@ -44,7 +48,6 @@ def input_float(ch , intervalle=[]):
         if entree == '':
             print("You choose the default value")
             return 'default'
-
         try:
             entree = float(entree)
             if intervalle_exist:
@@ -87,16 +90,6 @@ def transform_coord(final_arc, nb_objective):
         if nb_objective == 3:
             z.append(i.fitness[2])
     return x,y,z,fit
-
-def euclidian_distance(pointA,pointB):
-    #return the euclidian distance between two point
-    if len(pointB) != len(pointA):
-        print("Erreur : les points ne sont pas dans la même dimension")
-    somme = 0
-    for i in range(len(pointA)):
-        somme += (pointA[i] - pointB[i])**2
-    return math.sqrt(somme)
-
 
 
 #------------------------------------------------------------

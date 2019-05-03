@@ -8,11 +8,6 @@ from os import system,chdir
 
 def moyenne(L):
     """permet de réaliser la moyenne de la liste L entrée en paramètres"""
-
-    if len(L) == 0:
-        print('liste vide dans moyenne')
-        return False
-
     somme = 0
     for i in L:
         somme += i
@@ -20,6 +15,12 @@ def moyenne(L):
 
 
 def liste_fichiers(schema):
+    """cette fonction récupère la liste des fichiers dans le répertoire actuel
+    correspondants au schéma"""
+
+    #ATTENTION : cette fonction ne fonctionne que dans des environnements
+    #acceptant les commandes shell
+
     #On liste les fichiers correspondants au schema dans un fichier temporaire
     cmd = 'ls ' + schema + ' > I_hope_no_important_file_is_named_this_way.tmp'
     system(cmd)
@@ -70,6 +71,9 @@ def moyenne_fichier(schema):
     de valeurs"""
     #On considère que l'utilisateur choisit des sets de fichiers ayant du sens
     #On ne mélange pas pop_size et p_crossover par exemple !!
+
+    #ATTENTION : en raison de l'utilisation de liste_fichier, cette fonction ne
+    #fonctionne que dans des environnements acceptant les commandes shell
 
     #On récupère la liste des fichiers :
     fichiers = liste_fichiers(schema)
