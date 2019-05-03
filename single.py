@@ -1,4 +1,4 @@
-from time import time
+import time
 from random import Random
 import inspyred
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ def resolve_single(problem, parameters):
     #           pop_size | nmb_gen | p_crossover | p_mutation
 
     prng = Random()
-    prng.seed(time())
+    prng.seed(time.time())
 
     ea = inspyred.ec.GA(prng)
     ea.terminator = inspyred.ec.terminators.evaluation_termination

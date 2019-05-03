@@ -1,10 +1,17 @@
 from single import *
+
 import time
 import inspyred
 import matplotlib.pyplot as plt
 from os import chdir
 
 
+print(time.time())
+
+interface = True
+
+################################################################################
+###     Fonctions :
 
 def str_nb(n,taille = 2):
     """écrit les nombres à la bonne taille, avec des 0 devant si ils sont trops courts"""
@@ -13,46 +20,58 @@ def str_nb(n,taille = 2):
         ch = '0' + ch
     return ch
 
-def transform_coord(final_arc, nb_objective):
-    #------------------------------------------------------------
-    #     WARNING: The next function return the coordinates of
-    #        the points of the pareto, but also a fitness tab which
-    #        is the principal argument of the hypervolume function
-    #------------------------------------------------------------
-    fit = []
-    x = []
-    y = []
-    z = []
-    for i in final_arc:
-        fit.append(i.fitness)
-        x.append(i.fitness[0])
-        y.append(i.fitness[1])
-        if nb_objective == 3:
-            z.append(i.fitness[2])
-    return x,y,z,fit
+
+def affiche(ch,pos):
+    if interface:
+        ch = '  '+ ch + '   '
+        message = police.render(ch, True, couleur, back)
+        fenetre.blit(message, pos)
+        pygame.display.flip()
+    else:
+        print(ch)
+
 
 def moyenne(L):
+    """permet de réaliser la moyenne d'une liste"""
     somme = 0
     for i in L:
         somme += i
     return somme / len(L)
 
+
 def var_nmb_gen(parameters,min_g,max_g,pas_g):
+    global continuer
+
     minimum = []
     for n_gen in range(min_g , max_g , pas_g):
+        #On fait varier le nombre de générations :
         parameters[1] = n_gen
+        #On affiche le nombre actuel de générations
         affiche('nmb_gen = '+ str(n_gen) + ' / ' + str(max_g),(0,60))
+
+        #On résoud le problème et stocke la meilleure solution
         final_pop = resolve_single(problem, parameters)
         liste = [Z.fitness for Z in final_pop]
         minimum.append( round( min(liste) , 4))
+        #On affiche le temps écoulé depuis le début du probleme
         affiche('temps total : ' + str(int((time.time() - first_start) // 60)) + ' minutes',(0,140))
+
+        if interface:
+            #Si la fenetre reçoit un signal de fermeture, on fait planter le programme :
+            if QUIT in [event.type for event in pygame.event.get()]:
+                this_thing_work_even_if_not_very_smart = 1/0 #Pour quitter le programme
+
     return minimum[:]
+
+
+
+################################################################################
+###     Choix Utilisateur :
+
 
 #On choisit le probleme pour lequel on va faire les tests :
 problem = inspyred.benchmarks.Ackley()
-name_problem = 'Ackley' #(seulement pour le nom des fichiers)
-
-interface = True
+name_problem = 'Ackley' #(sert pour le nom des fichiers de résultats)
 
 #On défini les paramètres par défaut :
 # pop_size, nmb_gen, p_crossover, p_mutation
@@ -66,21 +85,25 @@ parametres = [{'name' : 'pop_size' , 'indice' : 0 , 'min' : 10 , 'max' : 2000 , 
 {'name' : 'p_mutation' , 'indice' : 3 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True}
 ]
 
-
-
 #La façon dont le nombre de génération évolue :
 min_gen = 0
 max_gen = 10000
 pas_gen = 10
 
+################################################################################
+### Execution du programme :
+
+
+#initialisation de l'interface :
 if interface:
     try:
         #On initialise l'interface pour suivre l'évolution du programme
         import pygame
+        from pygame.locals import QUIT
         pygame.init()
         #On choisit la police d'affichage :
         police = pygame.font.Font(pygame.font.get_default_font(),17)
-        #on choisit la couleur du texte :
+        #on choisit la couleur du texte et du fond :
         couleur = (255,255,255)
         back = (0,0,0)
         #On crée la fenetre:
@@ -89,35 +112,32 @@ if interface:
         print('Interface not supported, try install the pygame module')
         interface = False
 
-def affiche(ch,pos):
-    if interface:
-        ch = '  '+ ch + '   '
-        message = police.render(ch, True, couleur, back)
-        fenetre.blit(message, pos)
-        pygame.display.flip()
-    else:
-        print(ch)
-
-
-chdir('data') # Pour enregistrer les fichiers au bon endroit
+#changement du dossier de travail, pour enregistrer les fichiers au bon endroit
+chdir('data')
 
 
 #On stocke dans exec times les temps d'exécution des différents problemes
 exec_times = []
+#On compte le nombre de fichiers générés:
 nmb_files = 0
+#On lance le chrono :
 first_start = time.time()
+#On affiche le nom du probleme :
 affiche(name_problem,(0,0))
 
 while True:
-
     #On fait varier chaque parametre les un à la suite des autres :
     for p in parametres:
+        #On affiche le parametre que l'on fait varier :
         affiche('Variation de '+p['name'],(0,20))
-        #On stocke la date (pour les fichiers)
+
+        #On stocke la date (pour les noms de fichiers)
         date = time.localtime()
 
         #On réinitialise les paramètres :
+        #(Si ce n'est pas la première boucle les paramètres peuvent avoir changé)
         parameters = default_parameters[:]
+
         #On initialise la liste contenant les diverses solutions :
         liste_soluces = []
 
@@ -148,7 +168,9 @@ while True:
 
         #On arrete le chronomètre :
         time_exec = time.time() - start_time
+        #On stocke le temps
         exec_times.append(time_exec)
+        #On affiche le temps :
         affiche(p['name']+ ' done in '+str(round(time_exec,3))+' secondes.',(0,100))
 
 
@@ -185,3 +207,4 @@ while True:
 
 
     print("--- Done in",int(sum(exec_times)),'secondes ---')
+print('Programme arreté correctement')

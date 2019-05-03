@@ -1,5 +1,5 @@
 
-# Influence du paramétrage sur l'optimisation de fonction par algorithmes génétiques
+# Influence du paramétrage sur l'optimisation de fonctions par algorithmes génétiques
 
 **Gabriel Vaubaillon  
 Swan Launay**
@@ -8,9 +8,10 @@ Swan Launay**
 Lors du projet nous souhaitions observer l'influence des paramètres des algorithmes génétiques sur la résolution de problèmes. Nous avons alors créé ce programme qui trace l'évolution de la solution *(ou de l'hypervolume du front de pareto en multi objectif)* en fonction du nombre de génération. Le but est aussi de générer ces courbes avec des paramètres différents pour pouvoir ensuite comprendre leur influence.
 
 ## Divers :
+- Le programme n'a pas été construit pour que l'on puisse le quitter facilement *(et nous n'avons malheureusement pas le temps de nous en occuper)*. Il faut fermer l'interface pygame si elle est activée ou interompre le porcessus *(Ctrl+C par défaut)*
 - Nous utilisons la bibliothèque python [Inspyred](https://github.com/aarongarrett/inspyred)
 - La fonction **liste_fichiers** dans le fichier **moyennes.py** ne fonctionne à priori que sur linux.  
-- Pour suivre l'algorithme nous utilisons une interface **pygame**, il est cependant possible de supprimer l'affichage en mettant la variable **interface** à **False** dans les fichiers **auto.py**. *(l'interface semble ne pas fonctionner sous windows)*
+- Pour suivre l'algorithme nous utilisons une interface **pygame**, cela peut cependant créer des problemes, il est donc possible de supprimer l'affichage en mettant la variable **interface** à **False** au début des fichiers **auto.py**.
 
 ## Utilisation :
 *Le fonctionnement est similaire que l'on soit en single objectif ou en multi objectif*
