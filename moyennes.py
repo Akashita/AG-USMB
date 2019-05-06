@@ -20,7 +20,7 @@ def liste_fichiers(schema):
 
     #ATTENTION : cette fonction ne fonctionne que dans des environnements
     #acceptant les commandes shell
-
+    
     #On liste les fichiers correspondants au schema dans un fichier temporaire
     cmd = 'ls ' + schema + ' > I_hope_no_important_file_is_named_this_way.tmp'
     system(cmd)
@@ -132,7 +132,7 @@ def lissage_tab(tab,step = 2):
 def graph_tableau(tab, pas_courbes =1, min_courbes=0, pas_values=1, namex='x', namey='y'):
     """cette fonction permet d'obtenir une courbe basique à partir d'un tableau
     input : tab, le tableau
-            pas_courbes : permet de sauter 'pas courbes' lors de l'affichage pour être plus lisible
+            pas_courbes : permet de sauter 'pas_courbes' courbes lors de l'affichage pour être plus lisible
             min_courbes : permet de ne pas afficher les premières courbes
             pas_value : permet de ne pas afficher toutes les valeurs
             namex & namey : les noms des axes"""
