@@ -1,6 +1,6 @@
 from multi import *
 
-import time
+from time import localtime, time
 
 import inspyred
 from inspyred import ec
@@ -77,7 +77,7 @@ def var_nmb_gen(parameters,min_g,max_g,pas_g):
         minimum.append( round( hypervolume , 4))
 
         #On affiche le temps écoulé depuis le début du lancement du programme
-        affiche('temps total : ' + str(int((time.time() - first_start) // 60)) + ' minutes',(0,140))
+        affiche('temps total : ' + str(int((time() - first_start) // 60)) + ' minutes',(0,140))
     return minimum[:]
 
 
@@ -102,6 +102,11 @@ parametres = [{'name' : 'pop_size' , 'indice' : 0 , 'min' : 10 , 'max' : 2000 , 
 {'name' : 'p_crossover' , 'indice' : 2 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True},
 {'name' : 'p_mutation' , 'indice' : 3 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True}
 ]
+
+#La façon dont le nombre de génération évolue :
+min_gen = 0
+max_gen = 100
+pas_gen = 1
 
 ################################################################################
 ### Execution du programme :
@@ -134,7 +139,7 @@ exec_times = []
 #On compte le nombre de fichiers générés:
 nmb_files = 0
 #On lance le chrono :
-first_start = time.time()
+first_start = time()
 #On affiche le nom du probleme :
 affiche(name_problem,(0,0))
 
@@ -145,7 +150,7 @@ while True:
         affiche('Variation de '+p['name'],(0,20))
 
         #On stocke la date (pour les noms de fichiers)
-        date = time.localtime()
+        date = localtime()
 
         #On réinitialise les paramètres :
         #(Si ce n'est pas la première boucle les paramètres peuvent avoir changé)
@@ -155,7 +160,7 @@ while True:
         liste_soluces = []
 
         #On commence le chronomètre :
-        start_time = time.time()
+        start_time = time()
 
         for var_param in range(p['min'] , p['max'] + 1, p['pas']):
 
@@ -173,14 +178,14 @@ while True:
 
             #On récupère la liste des solutions optimales de chaque résolution
             #en faisant varier le nombre de génération à chaque fois :
-            time_begin = time.time()
+            time_begin = time()
             liste_soluces.append(var_nmb_gen(parameters, min_gen, max_gen, pas_gen))
-            t = time.time() - time_begin
+            t = time() - time_begin
 
             affiche('Temps intermédiaire : '+str(round(t,3))+' secondes',(0,80))
 
         #On arrete le chronomètre :
-        time_exec = time.time() - start_time
+        time_exec = time() - start_time
         #On stocke le temps
         exec_times.append(time_exec)
         #On affiche le temps :
